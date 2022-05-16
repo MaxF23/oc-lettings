@@ -18,6 +18,8 @@ jobs:
       - checkout
    
   test:
+    requires: 
+      -build 
     executor: my-executor
     steps:
       - run: pytest
