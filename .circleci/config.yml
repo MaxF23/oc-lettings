@@ -34,7 +34,7 @@ jobs:
             username: ${{DOCKER_USER.DOCKERHUB_USERNAME}}
             password: ${{DOCKER_USER.DOCKERHUB_PASSWORD}}
           command: |
-            docker tag oc-lettings:$CIRCLE_SHA1 maxf2389/oc-lettings:$CIRCLE_SHA1
+            docker tag oc-lettings:latest maxf2389/oc-lettings:$CIRCLE_SHA1
             echo $DOCKER_HUB_PASSWORD | docker login -u maxf2389 --password-stdin
             docker push maxf2389/oc-lettings:$CIRCLE_SHA1
  
