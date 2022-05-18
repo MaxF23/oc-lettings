@@ -31,5 +31,5 @@ workflows:
     jobs:
       - build_and_push_to_docker_hub
       - test_with_pytest:
-        requires:
-          - build_and_push_to_docker_hub
+          requires:
+            - build_and_push_to_docker_hub
