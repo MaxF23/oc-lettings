@@ -4,7 +4,7 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  build:
+  build_and_push_to_docker_hub:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     machine: true
@@ -15,11 +15,13 @@ jobs:
       - run:
           command: |
             docker build -t oc-lettings .
-            docker run -d -p 8000:8000 oc-lettings
+            docker tag oc-lettings:latest maxf2389/oc-lettings:latest
+            docker push maxf2389/oc-lettings:latest
+ 
            
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   "build":
     jobs:
-      - build
+      - build_and_push_to_docker_hub
