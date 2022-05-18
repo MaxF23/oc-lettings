@@ -15,7 +15,7 @@ jobs:
           command: |
             docker build -t oc-lettings .
             docker tag oc-lettings:latest maxf2389/oc-lettings:latest
-            echo $DOCKER_HUB_PASSWORD | docker login -u maxf2389 --password-stdin
+            echo $DOCKER_HUB_PASSWORD | docker login -u maxf2389 --password dockerhub
             docker push maxf2389/oc-lettings:latest
  
 # Invoke jobs via workflows
