@@ -13,9 +13,10 @@ jobs:
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
       - checkout
-      name: Build Docker image oc-lettings
-      command: |
-        docker build -t oc-lettings .
+      - run:
+          name: Build Docker image oc-lettings
+          command: |
+            docker build -t oc-lettings .
            
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
