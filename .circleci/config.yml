@@ -28,7 +28,8 @@ jobs:
           name: Build container
           command: |
             if [ "$ {CIRCLE_BRANCH}" == "master" ]; then
-            docker build -t oc-lettings .
+              docker build -t oc-lettings .
+            fi
       - run:
           name: Push to dockerhub
           uses: docker/login-action@v1
