@@ -35,6 +35,18 @@ jobs:
             echo "$DOCKER_HUB_PASS" | docker login -u maxf2389 --password-stdin
             docker push maxf2389/oc-lettings:$CIRCLE_SHA1
 
+  deploy_to_heroku:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build and push Docker image to Heroku
+          command: |
+            sudo curl https://cli-assets.heroku.com/install.sh | sh
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:login
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:push -a oc-lettings2389 web
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release -a oc-lettings2389 web
+
 workflows:
   "test_build_push":
     jobs:
@@ -42,6 +54,12 @@ workflows:
       - build_and_push_to_docker_hub:
           requires:
             - tests
+          filters:
+            branches:
+              only: main
+      - deploy_to_heroku:
+          requires:
+            - build_and_push_to_docker_hub
           filters:
             branches:
               only: main
