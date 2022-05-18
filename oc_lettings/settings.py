@@ -114,4 +114,4 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static')
 )
 
-ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '0.0.0.0', 'oc-lettings2389.herokuapp.com']
