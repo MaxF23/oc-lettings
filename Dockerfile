@@ -6,8 +6,8 @@ WORKDIR /app/
 COPY requirements.txt /app/requirements.txt
 
 RUN /usr/local/bin/python -m pip install --upgrade pip \
-    python -m venv env \
-    source env/bin/activate \
+    pip3 install virtualenv \
+    virtualenv venv \
     pip3 install -r requirements.txt
 
 ADD . /app/
