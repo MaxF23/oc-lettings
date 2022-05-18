@@ -35,7 +35,7 @@ jobs:
             password: ${{DOCKER_USER.DOCKERHUB_PASSWORD}}
           command: |
             docker tag oc-lettings:latest maxf2389/oc-lettings:$CIRCLE_SHA1
-            docker login -u maxf2389 --password $DOCKER_HUB_PASSWORD
+            docker login -u maxf2389 --password dockerhub
             docker push maxf2389/oc-lettings:$CIRCLE_SHA1
  
 # Invoke jobs via workflows
