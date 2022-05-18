@@ -25,7 +25,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lettings',
-    'profiles'
+    'profiles',
+    'gunicorn'
 ]
 
 MIDDLEWARE = [
