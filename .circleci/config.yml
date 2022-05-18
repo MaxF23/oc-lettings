@@ -4,32 +4,40 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
+  tests:
+    docker:
+      - image: cimg/python:3.10.4
+    steps:
+      - checkout
+      - run:
+          name: Install requirements
+          command: pip install -r requirements.txt
+      - run:
+          name: Test with pytest
+          command: pytest -Wi
+
   build_and_push_to_docker_hub:
     docker:
-      - image: cimg/python:3.10.2  
+      - image: cimg/python:3.10.4
     steps:
       - checkout
       - setup_remote_docker
       - run:
-          name: Build container and push to dockerhub
+          name: Build container
+          command: docker build -t oc-lettings .
+      - run:
+          name: Push to dockerhub
           command: |
-            docker build -t oc-lettings .
             docker tag oc-lettings:latest maxf2389/oc-lettings:latest
             echo $DOCKER_HUB_PASSWORD | docker login -u maxf2389 --password dockerhub
             docker push maxf2389/oc-lettings:latest
-  test_with_pytest:
-    docker:
-      - image: maxf2389/oc-lettings:latest
-    steps:
-      - checkout
-      - run: pytest
  
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
   "build":
     jobs:
-      - build_and_push_to_docker_hub
-      - test_with_pytest:
+      - tests
+      - build_and_push_to_docker_hub:
           requires:
-            - build_and_push_to_docker_hub
+            - tests
