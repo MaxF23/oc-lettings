@@ -25,26 +25,21 @@ jobs:
       - checkout
       - setup_remote_docker
       - run:
-          name: Build container
+          name: Build container and push to docker hub
+          uses: docker/login-action@v1
+            with:
+              username: ${{DOCKER_USER.DOCKERHUB_USERNAME}}
+              password: ${{DOCKER_USER.DOCKERHUB_PASSWORD}}
           command: |
             if [ "$ {CIRCLE_BRANCH}" == "master" ]; then
               docker build -t oc-lettings .
+              docker tag oc-lettings:latest maxf2389/oc-lettings:$CIRCLE_SHA1
+              docker login -u maxf2389 --password dockerhub
+              docker push maxf2389/oc-lettings:$CIRCLE_SHA1
             fi
-      - run:
-          name: Push to dockerhub
-          uses: docker/login-action@v1
-          with:
-            username: ${{DOCKER_USER.DOCKERHUB_USERNAME}}
-            password: ${{DOCKER_USER.DOCKERHUB_PASSWORD}}
-          command: |
-            docker tag oc-lettings:latest maxf2389/oc-lettings:$CIRCLE_SHA1
-            docker login -u maxf2389 --password dockerhub
-            docker push maxf2389/oc-lettings:$CIRCLE_SHA1
- 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+
 workflows:
-  "build":
+  "test_build_push":
     jobs:
       - tests
       - build_and_push_to_docker_hub:
