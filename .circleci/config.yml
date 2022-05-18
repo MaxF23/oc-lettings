@@ -30,12 +30,10 @@ jobs:
       - run:
           name: Build container and push to docker hub
           command: |
-            if [ "$ {CIRCLE_BRANCH}" == "master" ]; then
-              docker build -t oc-lettings .
-              docker tag oc-lettings:latest maxf2389/oc-lettings:$CIRCLE_SHA1
-              echo "$DOCKER_HUB_PASS" | docker login -u maxf2389 --password-stdin
-              docker push maxf2389/oc-lettings:$CIRCLE_SHA1
-            fi
+            docker build -t oc-lettings .
+            docker tag oc-lettings:latest maxf2389/oc-lettings:$CIRCLE_SHA1
+            echo "$DOCKER_HUB_PASS" | docker login -u maxf2389 --password-stdin
+            docker push maxf2389/oc-lettings:$CIRCLE_SHA1
 
 workflows:
   "test_build_push":
@@ -44,5 +42,6 @@ workflows:
       - build_and_push_to_docker_hub:
           requires:
             - tests
-          branches:
-            only: main
+          filters:
+            branches:
+              only: master
