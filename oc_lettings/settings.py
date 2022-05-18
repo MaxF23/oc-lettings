@@ -106,4 +106,6 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+STATIC_ROOT = '/static/'
+
 ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '0.0.0.0']
