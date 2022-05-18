@@ -6,10 +6,7 @@ version: 2.1
 jobs:
   build_and_push_to_docker_hub:
     docker:
-      - image: cimg/python:3.10.2
-        auth:
-          username: maxf2389  # can specify string literal values
-          password: $DOCKERHUB_PASSWORD  # or project environment variable reference   
+      - image: cimg/python:3.10.2  
     steps:
       - checkout
       - run:
