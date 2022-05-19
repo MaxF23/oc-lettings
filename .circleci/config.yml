@@ -4,7 +4,7 @@ version: 2.1
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
-  tests:
+  linting_and_tests:
     docker:
       - image: cimg/python:3.10.4
     steps:
@@ -14,6 +14,9 @@ jobs:
           command: |
             /home/circleci/.pyenv/versions/3.10.4/bin/python3.10 -m pip install --upgrade pip
             pip install -r requirements.txt
+      - run:
+          name: Linting with flake8
+          command: flake8
       - run:
           name: Test with pytest
           command: pytest -Wi
@@ -50,10 +53,10 @@ jobs:
 workflows:
   "test_build_push_deploy":
     jobs:
-      - tests
+      - linting_and_tests
       - build_and_push_to_docker_hub:
           requires:
-            - tests
+            - linting_and_tests
           filters:
             branches:
               only: main
