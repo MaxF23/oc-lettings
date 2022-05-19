@@ -22,8 +22,8 @@ jobs:
     docker:
       - image: cimg/python:3.10.4
         auth:
-          username: maxf2389
-          password: $DOCKER_HUB_PASS
+          username: $DOCKERHUB_USER
+          password: $DOCKERHUB_PWD
     steps:
       - checkout
       - setup_remote_docker
@@ -31,9 +31,9 @@ jobs:
           name: Build container and push to docker hub
           command: |
             docker build -t oc-lettings .
-            docker tag oc-lettings:latest maxf2389/oc-lettings:$CIRCLE_SHA1
-            echo "$DOCKER_HUB_PASS" | docker login -u maxf2389 --password-stdin
-            docker push maxf2389/oc-lettings:$CIRCLE_SHA1
+            docker tag oc-lettings:latest $DOCKERHUB_USER/oc-lettings:$CIRCLE_SHA1
+            echo "$DOCKERHUB_PWD" | docker login -u $DOCKERHUB_USER --password-stdin
+            docker push $DOCKERHUB_USER/oc-lettings:$CIRCLE_SHA1
 
   deploy_to_heroku:
     machine: true
