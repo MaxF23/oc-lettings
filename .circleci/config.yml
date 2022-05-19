@@ -1,6 +1,4 @@
 version: 2.1
-orbs:
-  heroku: circleci/heroku@1.2.6
 jobs:
   linting_and_tests:
     docker:
@@ -36,17 +34,17 @@ jobs:
             echo "$DOCKERHUB_PWD" | docker login -u $DOCKERHUB_USER --password-stdin
             docker push $DOCKERHUB_USER/oc-lettings:$CIRCLE_SHA1
 
-#  deploy_to_heroku:
-#    executor: heroku/default
-#    steps:
-##      - checkout
-##      - run:
-##          name: Build and push Docker image to Heroku
-##          command: |
-##            curl https://cli-assets.heroku.com/install.sh | sh
-##            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:login
-##            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:push -a $HEROKU_APP_NAME web
-##            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release -a $HEROKU_APP_NAME web
+  deploy_to_heroku:
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: Build and push Docker image to Heroku
+          command: |
+            curl https://cli-assets.heroku.com/install.sh | sh
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:login
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:push -a $HEROKU_APP_NAME web
+            HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:release -a $HEROKU_APP_NAME web
 
 workflows:
   "test_build_push_deploy":
@@ -58,10 +56,7 @@ workflows:
           filters:
             branches:
               only: main
-#      - deploy_to_heroku:
-      - heroku/push-docker-image:
-          pre-deploy:
-            - run: echo "$DOCKERHUB_PWD" | docker login -u $DOCKERHUB_USER --password-stdin
+      - deploy_to_heroku:
           requires:
             - build_and_push_to_docker_hub
           filters:
