@@ -121,7 +121,7 @@ ALLOWED_HOSTS = ['.localhost', '127.0.0.1', '0.0.0.0', 'oc-lettings2389.herokuap
 
 
 sentry_sdk.init(
-    dsn="https://examplePublicKey@o0.ingest.sentry.io/0",
+    dsn="https://a5450862b9ea4e07b96d07426b648afc@o1253401.ingest.sentry.io/6420357",
     integrations=[DjangoIntegration()],
 
     # Set traces_sample_rate to 1.0 to capture 100%
