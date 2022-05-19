@@ -43,6 +43,7 @@ jobs:
       - run:
           name: Build and push Docker image to Heroku
           command: |
+            curl https://cli-assets.heroku.com/install.sh | sh
             HEROKU_API_KEY=${HEROKU_API_KEY} heroku container:login
             docker tag maxf2389/oc-lettings:$CIRCLE_SHA1 registry.heroku/oc-lettings2389/web
             docker push registry.heroku.com/oc-lettings2389/web
